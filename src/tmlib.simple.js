@@ -175,6 +175,7 @@ var SoundManager = {
 };
 
 // ref: http://evolve.reintroducing.com/_source/classes/as3/SoundManager/SoundManager.html
+// ref: https://github.com/nicklockwood/SoundManager
 tm.define("SoundManager", {
 
     play: function(name, volume, startTime, loop) {
@@ -189,24 +190,29 @@ tm.define("SoundManager", {
     fade: function() {
 
     },
+    setVolume: function() {
+
+    },
     mute: function() {
 
     },
 
-    setVolume: function() {
+    playMusic: function(name, loop, fade) {
 
     },
-
-    playBGM: function(name) {
-
-    },
-    stopBGM: function(name) {
+    stopMusic: function() {
 
     },
-    swapBGM: function(name, fadeTime) {
+    pauseMusic: function() {
 
     },
-    muteBGM: function() {
+    swapMusic: function(name, fadeTime) {
+
+    },
+    setVolumeMusic: function(volume) {
+
+    },
+    muteMusic: function() {
 
     },
 });
