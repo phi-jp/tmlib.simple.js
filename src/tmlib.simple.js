@@ -165,3 +165,48 @@ tm.define("tm.util.GridSystem", {
 
 var GRID_X = tm.util.GridSystem({width:640, col:16});
 var GRID_Y = tm.util.GridSystem({width:960, col:16});
+
+
+var SoundManager = {
+    playSound: function() {
+        var sound = tm.asset.Manager(get);
+        return se
+    },
+};
+
+// ref: http://evolve.reintroducing.com/_source/classes/as3/SoundManager/SoundManager.html
+tm.define("SoundManager", {
+
+    play: function(name, volume, startTime, loop) {
+
+    },
+    stop: function() {
+
+    },
+    pause: function() {
+
+    },
+    fade: function() {
+
+    },
+    mute: function() {
+
+    },
+
+    setVolume: function() {
+
+    },
+
+    playBGM: function(name) {
+
+    },
+    stopBGM: function(name) {
+
+    },
+    swapBGM: function(name, fadeTime) {
+
+    },
+    muteBGM: function() {
+
+    },
+});
