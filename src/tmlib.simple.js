@@ -5,8 +5,8 @@
 
 ;(function() {
 
-    tm.simple = function() {
-        tm.simple.all();
+    tm.simple = function(param) {
+        tm.simple.all(param);
     };
 
     tm.simple.defaults = {
@@ -17,9 +17,9 @@
         QUERY: tm.util.QueryString.parse(location.search.substr(1)),
     };
 
-    tm.simple.all = function() {
+    tm.simple.all = function(param) {
         this.expand();
-        this.setup();
+        this.setup(param);
     };
 
     tm.simple.expand = function() {
@@ -58,7 +58,7 @@
         });
     };
 
-    tm.simple.setup = function() {
+    tm.simple.setup = function(param) {
         tm.main(function() {
             var app = tm.app.CanvasApp("#world");       // 生成
             app.resize(SCREEN_WIDTH, SCREEN_HEIGHT);    // サイズ(解像度)設定
@@ -72,12 +72,12 @@
                     height: SCREEN_HEIGHT,
                 });
                 loading.onload = function() {
-                    app.replaceScene(tm.simple.ManagerScene());
+                    app.replaceScene(tm.simple.ManagerScene(param));
                 };
                 app.replaceScene(loading);
             }
             else {
-                app.replaceScene(tm.simple.ManagerScene());
+                app.replaceScene(tm.simple.ManagerScene(param));
             }
 
             app.run();
@@ -88,12 +88,15 @@
     tm.define("tm.simple.ManagerScene", {
         superClass: "tm.scene.ManagerScene",
 
-        init: function() {
+        init: function(param) {
             this.superInit({
-                startLabel: QUERY.scene || 'game',
+                startLabel: QUERY.scene || 'title',
                 scenes: [
                     {
                         className: "TitleScene",
+                        arguments: {
+                            title: param.title || "Title",
+                        },
                         label: "title",
                     },
                     {

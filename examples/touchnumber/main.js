@@ -2,7 +2,9 @@
  * main.js
  */
 
-tm.simple();
+tm.simple({
+    title: "Touch Number",
+});
 
 tm.define("GameScene", {
     superClass: "Scene",
@@ -47,6 +49,7 @@ tm.define("GameScene", {
         timerLabel.x = SCREEN_CENTER_X;
         timerLabel.y = 100;
         timerLabel.fillStyle = "#222";
+        timerLabel.fontSize = 64;
         this.timerLabel = timerLabel;
 
 
@@ -63,7 +66,8 @@ tm.define("GameScene", {
 
     update: function(app) {
         this.time += app.deltaTime;
-        this.timerLabel.text = this.time;
+        var sec = this.time/1000;
+        this.timerLabel.text = sec.floor();
     },
 
     check: function(piece) {
@@ -79,6 +83,12 @@ tm.define("GameScene", {
     },
 
     clear: function() {
+        var sec = this.time/1000;
+        var score = 100 - sec.floor();
+        score = Math.max(score, 0);
+        this.nextArguments = {
+            score: score,
+        };
         this.app.popScene();
     },
 
