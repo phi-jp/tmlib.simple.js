@@ -2,7 +2,7 @@
  * main.js
  */
 
-var speed = 16;
+var speed = 20;
 
 tm.simple({
     title: "Block Break",
@@ -16,23 +16,26 @@ tm.define("GameScene", {
 
         this.currentIndex = 1;
         this.time = 0;
+        
         var blockGroup = tm.display.CanvasElement().addChildTo(this);
         var pieceSize = 64;
         var maxPerLine = 8;
-        var pieceOffsetX = (SCREEN_WIDTH-maxPerLine*pieceSize)/2 + pieceSize/2;
         var pieceOffsetY = 100;
         this.blockGroup = blockGroup;
 
+        var gs = GridSystem(SCREEN_WIDTH, 10);
+
         (64).times(function(index) {
-            var xIndex = index%8;
-            var yIndex = (index/8).floor();
+            var xIndex = index%maxPerLine;
+            var yIndex = (index/maxPerLine).floor();
 
             var rect = RectangleShape({
                 width: 64,
                 height: 32,
                 fillStyle: "hsl(190, 94%, 50%)",
             }).addChildTo(blockGroup);
-            rect.x = pieceOffsetX + xIndex*pieceSize;
+            rect.origin.x = 0;
+            rect.x = gs.span(xIndex+1);
             rect.y = pieceOffsetY + yIndex*32;
         });
 
@@ -47,12 +50,40 @@ tm.define("GameScene", {
     update: function(app) {
         if (this.paddle.isHold()) return ;
 
+        (speed).times(function() {
+            this.hitCheck();
+            this.ball.move(1);
+        }, this);
+    },
+
+    hitCheck: function() {
         var ball = this.ball;
         var paddle = this.paddle;
         var blocks = this.blockGroup.children;
         blocks.some(function(block) {
             if (ball.isHitElement(block)) {
                 block.remove();
+
+                /*
+                var circle = tm.geom.Circle(ball.x, ball.y, 10);
+                if (
+                    circle.contains(block.left, block.top) ||
+                    circle.contains(block.left, block.bottom) ||
+                    circle.contains(block.right, block.top) ||
+                    circle.contains(block.right, block.bottom)
+                    )
+                {
+                    var dir = null;
+                    if (ball.v.x > ball.v.y) {
+                        ball.v.x *= -1;
+                        dir = 'yoko';
+                    }
+                    else {
+                        ball.v.y *= -1;
+                        dir = 'tate';
+                    }
+                }
+                */
 
                 if (block.left <= ball.x && ball.x <= block.right) {
                     ball.v.y *= -1;
@@ -67,17 +98,9 @@ tm.define("GameScene", {
         if (ball.isHitElement(paddle)) {
             var dir = tm.geom.Vector2.sub(ball, paddle);
             dir.normalize();
-            dir.mul(speed);
 
             ball.v.x = dir.x;
             ball.v.y = dir.y;
-
-            // if (paddle.left <= ball.x && ball.x <= paddle.right) {
-            //     ball.v.y *= -1;
-            // }
-            // else {
-            //     ball.v.x *= -1;
-            // }
         }
 
         if (ball.x <= 0) {
@@ -109,7 +132,7 @@ tm.define("GameScene", {
         if (this.paddle.isHold() === true) {
             this.paddle.release();
             this.ball.v.x = 0;
-            this.ball.v.y =-speed;
+            this.ball.v.y =-1;
         }
     },
     clear: function() {
@@ -132,7 +155,6 @@ tm.define("Paddle", {
             fillStyle: "white",
             width: 160,
             height: 30,
-            lineWidth: 4,
         });
     },
 
@@ -175,9 +197,9 @@ tm.define("Ball", {
         this.v = tm.geom.Vector2(0, 0);
     },
 
-    update: function() {
-        this.x += this.v.x;
-        this.y += this.v.y;
+    move: function(len) {
+        this.x += this.v.x * len;
+        this.y += this.v.y * len;
     },
 })
 
