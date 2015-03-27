@@ -6,6 +6,9 @@ var speed = 20;
 
 tm.simple({
     title: "Block Break",
+    query: "#world",
+    width: 640,
+    height: 960,
 });
 
 tm.define("GameScene", {
@@ -16,7 +19,7 @@ tm.define("GameScene", {
 
         this.currentIndex = 1;
         this.time = 0;
-        
+
         var blockGroup = tm.display.CanvasElement().addChildTo(this);
         var pieceSize = 64;
         var maxPerLine = 8;

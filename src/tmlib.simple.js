@@ -5,6 +5,13 @@
 ;(function() {
 
     tm.simple = function(param) {
+        param.$safe({
+            query: "#world",
+            title: "Title",
+            background: "rgba(250, 250, 250, 1.0)",
+            width: 640,
+            height: 960,
+        });
         tm.simple.all(param);
     };
 
@@ -59,10 +66,10 @@
 
     tm.simple.setup = function(param) {
         tm.main(function() {
-            var app = tm.app.CanvasApp("#world");       // 生成
+            var app = tm.app.CanvasApp(param.query);       // 生成
             app.resize(SCREEN_WIDTH, SCREEN_HEIGHT);    // サイズ(解像度)設定
             app.fitWindow();                            // 自動フィッティング有効
-            app.background = "rgba(250, 250, 250, 1.0)";// 背景色
+            app.background = param.background;// 背景色
 
             if (window.ASSETS) {
                 var loading = LoadingScene({
@@ -94,7 +101,7 @@
                     {
                         className: "TitleScene",
                         arguments: {
-                            title: param.title || "Title",
+                            title: param.title,
                         },
                         label: "title",
                     },
