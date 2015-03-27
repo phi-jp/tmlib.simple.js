@@ -1,3 +1,7 @@
+/*
+ * tmlib.simple.js
+ */
+
 
 ;(function() {
 
@@ -10,9 +14,6 @@
         SCREEN_HEIGHT: 960,
         SCREEN_CENTER_X: 640/2,
         SCREEN_CENTER_Y: 960/2,
-        ASSETS: {
-            piyokichi: '../assets/tomapiko.png',
-        },
         QUERY: tm.util.QueryString.parse(location.search.substr(1)),
     };
 
@@ -59,20 +60,25 @@
 
     tm.simple.setup = function() {
         tm.main(function() {
-            var app = CanvasApp("#world");
-            app.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
-            app.fitWindow();
+            var app = tm.app.CanvasApp("#world");       // 生成
+            app.resize(SCREEN_WIDTH, SCREEN_HEIGHT);    // サイズ(解像度)設定
+            app.fitWindow();                            // 自動フィッティング有効
+            app.background = "rgba(250, 250, 250, 1.0)";// 背景色
 
-            var loading = LoadingScene({
-                assets: ASSETS,
-                width: SCREEN_WIDTH,
-                height: SCREEN_HEIGHT,
-            });
-            loading.onload = function() {
+            if (window.ASSETS) {
+                var loading = LoadingScene({
+                    assets: ASSETS,
+                    width: SCREEN_WIDTH,
+                    height: SCREEN_HEIGHT,
+                });
+                loading.onload = function() {
+                    app.replaceScene(tm.simple.ManagerScene());
+                };
+                app.replaceScene(loading);
+            }
+            else {
                 app.replaceScene(tm.simple.ManagerScene());
-            };
-
-            app.replaceScene(loading);
+            }
 
             app.run();
         });
