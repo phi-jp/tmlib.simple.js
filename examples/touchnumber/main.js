@@ -2,6 +2,12 @@
  * main.js
  */
 
+
+var ASSETS = {
+    'touch': '../../assets/touch.wav',
+    'bgm': '../../assets/lo_008.mp3',
+};
+
 tm.simple({
     title: "Touch Number",
 });
@@ -31,6 +37,7 @@ tm.define("GameScene", {
             rect.setBoundingType("rect");
             rect.checkHierarchy = true;
             rect.onpointingstart = function() {
+                SoundManager.play('touch');
                 self.check(this);
             };
             
@@ -62,6 +69,8 @@ tm.define("GameScene", {
         resetButton.onpush = function() {
             self.reset();
         };
+
+        SoundManager.playMusic('bgm');
     },
 
     update: function(app) {
