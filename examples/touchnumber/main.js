@@ -47,24 +47,23 @@ tm.define("GameScene", {
 
         pieceGrid.maxPerLine = maxPerLine;
         pieceGrid.x = (SCREEN_WIDTH-maxPerLine*pieceSize)/2 + pieceSize/2;
-        pieceGrid.y = 240;
+        pieceGrid.y = SCREEN_GRID_Y.span(4);
         pieceGrid.cellWidth = pieceSize;
         pieceGrid.cellHeight = pieceSize;
         pieceGrid.reposition();
 
         var timerLabel = Label(0).addChildTo(this);
         timerLabel.x = SCREEN_CENTER_X;
-        timerLabel.y = 100;
+        timerLabel.y = SCREEN_GRID_Y.span(2);
         timerLabel.fillStyle = "#222";
         timerLabel.fontSize = 64;
         this.timerLabel = timerLabel;
 
-
         var resetButton = FlatButton({
             text: "RESET",
         }).addChildTo(this);
-        resetButton.x = SCREEN_CENTER_X;
-        resetButton.y = 800;
+        resetButton.x = SCREEN_GRID_X.center();
+        resetButton.y = SCREEN_GRID_Y.span(14);
 
         resetButton.onpush = function() {
             self.reset();

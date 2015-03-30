@@ -15,22 +15,12 @@
         tm.simple.all(param);
     };
 
-    tm.simple.defaults = {
-        SCREEN_WIDTH: 640,
-        SCREEN_HEIGHT: 960,
-        SCREEN_CENTER_X: 640/2,
-        SCREEN_CENTER_Y: 960/2,
-        QUERY: tm.util.QueryString.parse(location.search.substr(1)),
-    };
-
     tm.simple.all = function(param) {
-        this.expand();
+        this.expand(param);
         this.setup(param);
     };
 
-    tm.simple.expand = function() {
-        window.$safe(tm.simple.defaults);
-
+    tm.simple.expand = function(param) {
         tm.$forIn(function(key, value) {
             if (typeof value !== 'object') {
                 return ;
@@ -61,6 +51,16 @@
                     // console.log(key);
                 }
             });
+        });
+
+        window.$extend({
+            SCREEN_WIDTH: param.width,
+            SCREEN_HEIGHT: param.height,
+            SCREEN_CENTER_X: param.width/2,
+            SCREEN_CENTER_Y: param.height/2,
+            SCREEN_GRID_X: GridSystem(param.width, 16),
+            SCREEN_GRID_Y: GridSystem(param.height, 16),
+            QUERY: tm.util.QueryString.parse(location.search.substr(1)),
         });
     };
 
@@ -128,7 +128,4 @@
 
 })();
 
-
-var GRID_X = tm.util.GridSystem({width:640, col:16});
-var GRID_Y = tm.util.GridSystem({width:960, col:16});
 
