@@ -20,18 +20,24 @@ tm.define("GameScene", {
 
         this.currentIndex = 1;
         this.time = 0;
-        var pieceGrid = Grid().addChildTo(this);
+        var pieceGroup = Grid().addChildTo(this);
         var pieceSize = 100;
         var maxPerLine = 5;
         var numbers = Array.range(1, 26);
         var self = this;
 
-        numbers.shuffle().each(function(index) {
+        var pieceGrid = GridSystem(SCREEN_WIDTH, maxPerLine+1);
+
+        numbers.shuffle().each(function(index, i) {
+            var xIndex = i%maxPerLine;
+            var yIndex = (i/maxPerLine).floor();
             var rect = RectangleShape({
-                width: 90,
-                height: 90,
+                width: pieceGrid.span(1)-4,
+                height: pieceGrid.span(1)-4,
                 fillStyle: "hsl(190, 94%, 50%)",
-            }).addChildTo(pieceGrid);
+            }).addChildTo(pieceGroup);
+            rect.x = pieceGrid.span(xIndex+1);
+            rect.y = pieceGrid.span(yIndex) + 240;
             rect.index = index;
             rect.setInteractive(true);
             rect.setBoundingType("rect");
@@ -45,12 +51,12 @@ tm.define("GameScene", {
             label.fontSize = 32;
         });
 
-        pieceGrid.maxPerLine = maxPerLine;
-        pieceGrid.x = (SCREEN_WIDTH-maxPerLine*pieceSize)/2 + pieceSize/2;
-        pieceGrid.y = SCREEN_GRID_Y.span(4);
-        pieceGrid.cellWidth = pieceSize;
-        pieceGrid.cellHeight = pieceSize;
-        pieceGrid.reposition();
+        pieceGroup.maxPerLine = maxPerLine;
+        // pieceGroup.x = (SCREEN_WIDTH-maxPerLine*pieceSize)/2 + pieceSize/2;
+        // pieceGroup.y = SCREEN_GRID_Y.span(4);
+        pieceGroup.cellWidth = pieceSize;
+        pieceGroup.cellHeight = pieceSize;
+        // pieceGroup.reposition();
 
         var timerLabel = Label(0).addChildTo(this);
         timerLabel.x = SCREEN_CENTER_X;
@@ -70,6 +76,14 @@ tm.define("GameScene", {
         };
 
         SoundManager.playMusic('bgm');
+    },
+
+    onenter: function() {
+        var scene = CountScene({
+            width: SCREEN_WIDTH,
+            height: SCREEN_HEIGHT,
+        });
+        this.app.pushScene(scene);
     },
 
     update: function(app) {
