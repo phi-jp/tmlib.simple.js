@@ -86,15 +86,15 @@ tm.define("GameScene", {
                 rect.x = gx.span(j+1);
                 rect.y = gx.span(i) + 150 + gx.span(1);
 
-                rect.setInteractive(true, 'rect');
-                rect.onpointingstart = function() {
-                    this.check(rect);
-                }.bind(this);
-
                 var index = i*num + j;
                 if (index == answerIndex) {
                     rect.answer = true;
                     rect.fillStyle = answerColor;
+
+                    rect.setInteractive(true, 'rect');
+                    rect.onpointingstart = function() {
+                        this.check(rect);
+                    }.bind(this);
                 }
             }, this);
         }, this);
