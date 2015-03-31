@@ -41,10 +41,11 @@
                 return ;
             }
 
-            // console.log("#### " + key + " ###########");
+            console.log("#### " + key + " ###########");
             value.$forIn(function(key, value) {
                 if (!window[key]) {
                     window[key] = value;
+                    console.log(key);
                 }
                 else {
                     // TODO: 名前を考えなおす
@@ -127,5 +128,4 @@
 
 
 })();
-
 
