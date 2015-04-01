@@ -126,6 +126,76 @@
         },
     });
 
+    tm.define("tm.accessory.Accessory", {
+        superClass: "tm.event.EventDispatcher",
+
+        init: function() {
+            this.superInit();
+
+            this.element = null;
+        },
+        setElement: function(elm) {
+            this.element = elm;
+        },
+        getElement: function() {
+            return this.element;
+        },
+        isAttach: function() {
+
+        },
+    });
+
+
+    tm.define("tm.accessory.Draggable", {
+        superClass: "tm.accessory.Accessory",
+
+        init: function() {
+            this.superInit();
+        },
+
+        onattached: function() {
+            console.log("アタッチされたよ");
+
+            // this.element.draw = this.element.drawBoundingCircle;
+        },
+
+        ondetached: function() {
+
+        },
+
+        update: function() {
+            console.log("アタッチされてるよ");
+        },
+    });
+
+
+    tm.app.Element.prototype.attach = function(accessory) {
+        if (!this.accessories) {
+            this.accessories = [];
+            this.on('enterframe', function() {
+                this.accessories.each(function(accessory) {
+                    accessory.update && accessory.update();
+                });
+            });
+        }
+
+        this.accessories.push(accessory);
+        accessory.setElement(this);
+        accessory.flare('attached');
+
+        return this;
+    };
+
+    tm.app.Element.prototype.detach = function(accessory) {
+        if (this.accessories) {
+            this.accessories.erase(accessory);
+            accessory.setElement(null);
+            accessory.flare('detached');
+        }
+
+        return this;
+    };
+
 
 })();
 
